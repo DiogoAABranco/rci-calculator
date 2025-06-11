@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RCI Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    label, input { display: block; margin-bottom: 1em; }
+    button { padding: 0.5em 1em; }
+    .result { margin-top: 2em; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Reliable Change Index (RCI) Calculator</h1>
+  <label>Pre-test Score: <input type="number" id="pre" step="any"></label>
+  <label>Post-test Score: <input type="number" id="post" step="any"></label>
+  <label>Standard Deviation (SD): <input type="number" id="sd" step="any"></label>
+  <label>Reliability Coefficient (r): <input type="number" id="r" step="any" min="0" max="1"></label>
+  <button onclick="calculateRCI()">Calculate RCI</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    function calculateRCI() {
+      const pre = parseFloat(document.getElementById("pre").value);
+      const post = parseFloat(document.getElementById("post").value);
+      const sd = parseFloat(document.getElementById("sd").value);
+      const r = parseFloat(document.getElementById("r").value);
+
+      if (isNaN(pre) || isNaN(post) || isNaN(sd) || isNaN(r)) {
+        document.getElementById("result").textContent = "Please fill in all fields correctly.";
+        return;
+      }
+
+      const sem = sd * Math.sqrt(1 - r);
+      const rci = (post - pre) / (Math.sqrt(2) * sem);
+      document.getElementById("result").textContent = `RCI: ${rci.toFixed(3)}`;
+    }
+  </script>
+</body>
+</html>
