@@ -4,22 +4,145 @@
   <meta charset="UTF-8" />
   <title>RCI Calculator</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 2em; }
-    label, input { display: block; margin-bottom: 1em; }
-    button { padding: 0.5em 1em; }
-    .result { margin-top: 2em; font-weight: bold; }
-    hr { margin: 3em 0; }
-    section { max-width: 600px; }
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      margin: 2em auto;
+      max-width: 700px;
+      padding: 1em 2em;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      font-weight: 600;
+      margin-bottom: 1.2em;
+      font-size: 1.1em;
+      color: #34495e;
+    }
+
+    input[type=number] {
+      margin-top: 0.4em;
+      padding: 0.5em 0.75em;
+      font-size: 1em;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      transition: border-color 0.3s;
+      outline-offset: 2px;
+    }
+
+    input[type=number]:focus {
+      border-color: #2980b9;
+      box-shadow: 0 0 5px rgba(41, 128, 185, 0.4);
+    }
+
+    .result {
+      margin-top: 2em;
+      padding: 1em 1.5em;
+      background-color: #e8f0fe;
+      border: 2px solid #2980b9;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1.3em;
+      color: #1b4f72;
+      text-align: center;
+      min-height: 2.5em;
+      user-select: none;
+    }
+
+    hr {
+      margin: 3em 0;
+      border: none;
+      border-top: 2px solid #ddd;
+    }
+
+    section {
+      background: white;
+      padding: 1.8em 2em;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      font-size: 1.05em;
+      color: #2c3e50;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    ul li {
+      margin-bottom: 1.4em;
+      background: #f0f4f8;
+      padding: 1em 1.3em;
+      border-radius: 8px;
+      border-left: 5px solid #2980b9;
+    }
+
+    code {
+      display: inline-block;
+      background: #ecf0f1;
+      color: #c0392b;
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-weight: 600;
+      user-select: text;
+      white-space: nowrap;
+    }
+
+    em {
+      font-size: 0.9em;
+      color: #7f8c8d;
+    }
+
+    /* Highlight span values in formulas */
+    span#semVal,
+    span#sdiffVal,
+    span#rciVal {
+      color: #2980b9;
+      font-weight: 700;
+      font-family: Consolas, monospace;
+      background: #d6eaf8;
+      padding: 0.1em 0.3em;
+      border-radius: 4px;
+      user-select: text;
+      min-width: 50px;
+      display: inline-block;
+      text-align: center;
+    }
+
+    p {
+      margin-top: 0.8em;
+      margin-bottom: 0.8em;
+    }
   </style>
 </head>
 <body>
   <h1>Reliable Change Index (RCI) Calculator</h1>
-  <label>Pre-test Score: <input type="number" id="pre" step="any" /></label>
-  <label>Post-test Score: <input type="number" id="post" step="any" /></label>
-  <label>Standard Deviation (SD): <input type="number" id="sd" step="any" /></label>
-  <label>Reliability Coefficient (r): <input type="number" id="r" step="any" min="0" max="1" /></label>
+  <label>Pre-test Score:
+    <input type="number" id="pre" step="any" placeholder="Enter pre-test score" />
+  </label>
+  <label>Post-test Score:
+    <input type="number" id="post" step="any" placeholder="Enter post-test score" />
+  </label>
+  <label>Standard Deviation (SD):
+    <input type="number" id="sd" step="any" placeholder="Enter SD" />
+  </label>
+  <label>Reliability Coefficient (r):
+    <input type="number" id="r" step="any" min="0" max="1" placeholder="Enter reliability (0-1)" />
+  </label>
 
-  <div class="result" id="result"></div>
+  <div class="result" id="result">Fill in all fields to calculate RCI.</div>
 
   <hr />
 
