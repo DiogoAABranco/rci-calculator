@@ -1,24 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>RCI Calculator</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 2em; }
     label, input { display: block; margin-bottom: 1em; }
     button { padding: 0.5em 1em; }
     .result { margin-top: 2em; font-weight: bold; }
+    hr { margin: 3em 0; }
+    section { max-width: 600px; }
   </style>
 </head>
 <body>
   <h1>Reliable Change Index (RCI) Calculator</h1>
-  <label>Pre-test Score: <input type="number" id="pre" step="any"></label>
-  <label>Post-test Score: <input type="number" id="post" step="any"></label>
-  <label>Standard Deviation (SD): <input type="number" id="sd" step="any"></label>
-  <label>Reliability Coefficient (r): <input type="number" id="r" step="any" min="0" max="1"></label>
+  <label>Pre-test Score: <input type="number" id="pre" step="any" /></label>
+  <label>Post-test Score: <input type="number" id="post" step="any" /></label>
+  <label>Standard Deviation (SD): <input type="number" id="sd" step="any" /></label>
+  <label>Reliability Coefficient (r): <input type="number" id="r" step="any" min="0" max="1" /></label>
   <button onclick="calculateRCI()">Calculate RCI</button>
 
   <div class="result" id="result"></div>
+
+  <hr />
+
+  <section>
+    <h2>How RCI is Calculated</h2>
+    <p>The Reliable Change Index (RCI) helps determine if the change in test scores is statistically meaningful.</p>
+
+    <h3>Key Formulas</h3>
+    <ul>
+      <li><strong>Standard Error of Measurement (SEM):</strong><br />
+        <code>SEM = SD × √(1 - r)</code><br />
+        <em>SD = Standard Deviation, r = Reliability coefficient</em>
+      </li>
+      <li><strong>Standard Error of the Difference (S<sub>diff</sub>):</strong><br />
+        <code>S<sub>diff</sub> = √2 × SEM</code>
+      </li>
+      <li><strong>Reliable Change Index (RCI):</strong><br />
+        <code>RCI = (Post - Pre) ÷ S<sub>diff</sub></code>
+      </li>
+    </ul>
+
+    <h3>Interpretation</h3>
+    <p>
+      - An RCI greater than ±1.96 suggests <strong>statistically reliable change</strong>.<br />
+      - An RCI between -1.96 and 1.96 indicates the change could be due to <em>measurement error</em> or chance.
+    </p>
+  </section>
 
   <script>
     function calculateRCI() {
