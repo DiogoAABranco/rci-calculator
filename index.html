@@ -18,7 +18,6 @@
   <label>Post-test Score: <input type="number" id="post" step="any" /></label>
   <label>Standard Deviation (SD): <input type="number" id="sd" step="any" /></label>
   <label>Reliability Coefficient (r): <input type="number" id="r" step="any" min="0" max="1" /></label>
-  <button onclick="calculateRCI()">Calculate RCI</button>
 
   <div class="result" id="result"></div>
 
@@ -31,14 +30,14 @@
     <h3>Key Formulas</h3>
     <ul>
       <li><strong>Standard Error of Measurement (SEM):</strong><br />
-        <code>SEM = SD × √(1 - r)</code><br />
+        <code>SEM = SD × √(1 - r) = <span id="semVal">--</span></code><br />
         <em>SD = Standard Deviation, r = Reliability coefficient</em>
       </li>
       <li><strong>Standard Error of the Difference (S<sub>diff</sub>):</strong><br />
-        <code>S<sub>diff</sub> = √2 × SEM</code>
+        <code>S<sub>diff</sub> = √2 × SEM = <span id="sdiffVal">--</span></code>
       </li>
       <li><strong>Reliable Change Index (RCI):</strong><br />
-        <code>RCI = (Post - Pre) ÷ S<sub>diff</sub></code>
+        <code>RCI = (Post - Pre) ÷ S<sub>diff</sub> = <span id="rciVal">--</span></code>
       </li>
     </ul>
 
@@ -50,21 +49,52 @@
   </section>
 
   <script>
-    function calculateRCI() {
-      const pre = parseFloat(document.getElementById("pre").value);
-      const post = parseFloat(document.getElementById("post").value);
-      const sd = parseFloat(document.getElementById("sd").value);
-      const r = parseFloat(document.getElementById("r").value);
+    const preInput = document.getElementById("pre");
+    const postInput = document.getElementById("post");
+    const sdInput = document.getElementById("sd");
+    const rInput = document.getElementById("r");
 
-      if (isNaN(pre) || isNaN(post) || isNaN(sd) || isNaN(r)) {
-        document.getElementById("result").textContent = "Please fill in all fields correctly.";
+    const semSpan = document.getElementById("semVal");
+    const sdiffSpan = document.getElementById("sdiffVal");
+    const rciSpan = document.getElementById("rciVal");
+    const resultDiv = document.getElementById("result");
+
+    function updateCalculations() {
+      const pre = parseFloat(preInput.value);
+      const post = parseFloat(postInput.value);
+      const sd = parseFloat(sdInput.value);
+      const r = parseFloat(rInput.value);
+
+      if ([pre, post, sd, r].some(v => isNaN(v))) {
+        semSpan.textContent = "--";
+        sdiffSpan.textContent = "--";
+        rciSpan.textContent = "--";
+        resultDiv.textContent = "Please fill in all fields correctly.";
+        return;
+      }
+
+      if (r < 0 || r > 1) {
+        semSpan.textContent = "--";
+        sdiffSpan.textContent = "--";
+        rciSpan.textContent = "--";
+        resultDiv.textContent = "Reliability coefficient (r) must be between 0 and 1.";
         return;
       }
 
       const sem = sd * Math.sqrt(1 - r);
-      const rci = (post - pre) / (Math.sqrt(2) * sem);
-      document.getElementById("result").textContent = `RCI: ${rci.toFixed(3)}`;
+      const sdiff = Math.sqrt(2) * sem;
+      const rci = (post - pre) / sdiff;
+
+      semSpan.textContent = sem.toFixed(3);
+      sdiffSpan.textContent = sdiff.toFixed(3);
+      rciSpan.textContent = rci.toFixed(3);
+
+      resultDiv.textContent = `RCI: ${rci.toFixed(3)}`;
     }
+
+    [preInput, postInput, sdInput, rInput].forEach(input => {
+      input.addEventListener("input", updateCalculations);
+    });
   </script>
 </body>
 </html>
